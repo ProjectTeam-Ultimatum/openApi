@@ -29,13 +29,13 @@ public class JejuApiService {
                     // Item 내 다른 필드 로그 출력
                     log.info("Contentsid: {}", item.getContentsid());
                     log.info("Title: {}", item.getTitle());
+                    log.info("Introduction: {}", item.getIntroduction());
                     log.info("Alltag: {}", item.getAlltag());
                     log.info("Tag: {}", item.getTag());
-                    log.info("Introduction: {}", item.getIntroduction());
-                    log.info("Contentscd: {}", item.getContentscd().getLabel());
+                    log.info("Category: {}", item.getContentscd().getLabel());
                     log.info("Address: {}", item.getAddress());
                     log.info("Roadaddress: {}", item.getRoadaddress());
-                    log.info("Region1cd: {}", item.getRegion1cd());
+                    log.info("지역코드: {}", item.getRegion1cd().getLabel());
                     log.info("Region2cd: {}", item.getRegion2cd());
                     log.info("Latitude: {}", item.getLatitude());
                     log.info("Longitude: {}", item.getLongitude());

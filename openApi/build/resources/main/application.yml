@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9090
   servlet:
     encoding:
       charset: UTF-8
@@ -21,3 +21,6 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+
+jejuapi:
+  api-key: "nc3v2w57zkiafreu" # 제주 공공 API 키plan_day

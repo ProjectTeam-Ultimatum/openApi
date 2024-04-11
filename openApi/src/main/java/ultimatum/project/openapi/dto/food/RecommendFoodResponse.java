@@ -1,4 +1,4 @@
-package ultimatum.project.openapi.dto;
+package ultimatum.project.openapi.dto.food;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,10 @@ import java.sql.Time;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecommendFoodReponse {
+public class RecommendFoodResponse {
 
     private Long recommendFoodId;
+    private String recommendContentsid;
     private String recommendFoodTitle;
     private String recommendFoodIntroduction;
     private String recommendFoodAllTag;

@@ -1,16 +1,22 @@
 package ultimatum.project.openapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ultimatum.project.openapi.dto.JejuAllResponse;
+import ultimatum.project.openapi.dto.food.RecommendFoodResponse;
+import ultimatum.project.openapi.dto.jejuAPI.Item;
+import ultimatum.project.openapi.dto.jejuAPI.JejuAllResponse;
+import ultimatum.project.openapi.repository.RecommendListFoodRepository;
 import ultimatum.project.openapi.service.JejuApiService;
 
 @Tag(name = "recommendList", description = "제주도API")
@@ -18,6 +24,7 @@ import ultimatum.project.openapi.service.JejuApiService;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/jejuapi")
+@Transactional(readOnly = true)
 public class JejuApiController {
 
     //    private final WebClient webClient;
@@ -31,17 +38,18 @@ public class JejuApiController {
 
 
     @Autowired
-    public JejuApiController(WebClient.Builder webClientBuilder, JejuApiService jejuApiService) {
+    public JejuApiController(RecommendListFoodRepository recommendListFoodRepository, WebClient.Builder webClientBuilder, JejuApiService jejuApiService) {
         this.webClient = webClientBuilder.baseUrl("https://api.visitjeju.net").build();
         this.jejuApiService = jejuApiService;
     }
 
+    //전체 조회
     @GetMapping("/all")
     public Mono<ResponseEntity<JejuAllResponse>> getSights(@RequestParam(value = "page", defaultValue = "1") int page,
                                                            @RequestParam(value = "pageSize", defaultValue = "12") int pageSize) {
         logger.info("Requesting Jeju sights for page {} with page size {}", page, pageSize);
-//        String apiKey = "nc3v2w57zkiafreu"; // 실제 API 키를 여기에 입력하세요.
-//        String locale = "kr";
+          //String apiKey = "nc3v2w57zkiafreu"; // 실제 API 키를 여기에 입력하세요.
+          //String locale = "kr";
 
         Mono<JejuAllResponse> responseMono = webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -64,5 +72,12 @@ public class JejuApiController {
                 .defaultIfEmpty(ResponseEntity.notFound().build())
                 .doOnError(error -> log.error("Error processing Jeju API response", error));
     }
+
+    @PostMapping
+    public ResponseEntity<RecommendFoodResponse> createRecommendFood(@RequestBody Item item) {
+        RecommendFoodResponse response = jejuApiService.createFoodResponse(item);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
 

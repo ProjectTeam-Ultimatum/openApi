@@ -21,7 +21,7 @@ public class RecommendListFood {
     private String recommendFoodIntroduction;
     private String recommendFoodAllTag;
     private String recommendFoodTag;
-    private String recommendCategory;
+    private String recommendFoodCategory;
     private String recommendFoodAddress;
     private String recommendFoodRegion;
     private Time recommendFoodOpentime;

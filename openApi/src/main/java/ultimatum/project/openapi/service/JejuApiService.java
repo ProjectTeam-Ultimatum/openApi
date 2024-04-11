@@ -30,7 +30,7 @@ public class JejuApiService {
                     log.info("Contentsid: {}", item.getContentsid());
                     log.info("Title: {}", item.getTitle());
                     log.info("Introduction: {}", item.getIntroduction());
-                    log.info("Alltag: {}", item.getAlltag());
+                    log.info("Alltagg: {}", item.getAlltag());
                     log.info("Tag: {}", item.getTag());
                     log.info("Category: {}", item.getContentscd().getLabel());
                     log.info("Address: {}", item.getAddress());

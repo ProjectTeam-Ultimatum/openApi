@@ -2,6 +2,7 @@ package ultimatum.project.openapi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -16,8 +17,9 @@ import java.sql.Time;
 public class RecommendListPlace {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recommendPlaceId;
+    private String recommendPlaceContentsId;
     private String recommendPlaceTitle;
     private String recommendPlaceIntroduction;
     private String recommendPlaceAllTag;
@@ -31,8 +33,8 @@ public class RecommendListPlace {
     private Long recommendPlaceLike;
     private String recommendPlaceLatitude;
     private String recommendPlaceLongitude;
-    private Integer recommendPlacePhoneno;
+    private String recommendPlacePhoneNo;
     private String recommendPlaceImgPath;
-    private String recommendPlaceudget;
+    private String recommendPlaceBudget;
 
 }

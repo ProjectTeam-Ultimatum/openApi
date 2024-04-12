@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ultimatum.project.openapi.entity.RecommendListFood;
+import ultimatum.project.openapi.entity.RecommendListPlace;
 
 import java.sql.Time;
 
@@ -13,21 +15,30 @@ import java.sql.Time;
 @NoArgsConstructor
 public class RecommendPlaceResponse {
 
-    private Long recommendPlaceId;
     private String recommendPlaceTitle;
     private String recommendPlaceIntroduction;
     private String recommendPlaceAllTag;
     private String recommendPlaceTag;
-    private String recommendCategory;
+    private String recommendPlaceCategory;
     private String recommendPlaceAddress;
     private String recommendPlaceRegion;
-    private Time recommendPlaceOpentime;
-    private Time recommendPlaceClosetime;
-    private Long recommendPlaceStar;
-    private Long recommendPlaceLike;
     private String recommendPlaceLatitude;
     private String recommendPlaceLongitude;
-    private Integer recommendPlacePhoneno;
+    private String recommendPlacePhoneNo;
     private String recommendPlaceImgPath;
-    private String recommendPlaceBudget;
+
+    public RecommendPlaceResponse(RecommendListPlace recommendListPlace) {
+
+        this.recommendPlaceTitle = recommendListPlace.getRecommendPlaceTitle();
+        this.recommendPlaceIntroduction = recommendListPlace.getRecommendPlaceIntroduction();
+        this.recommendPlaceAllTag = recommendListPlace.getRecommendPlaceAllTag();
+        this.recommendPlaceTag = recommendListPlace.getRecommendPlaceTag();
+        this.recommendPlaceCategory = recommendListPlace.getRecommendPlaceCategory();
+        this.recommendPlaceAddress = recommendListPlace.getRecommendPlaceAddress();
+        this.recommendPlaceRegion = recommendListPlace.getRecommendPlaceRegion();
+        this.recommendPlaceLatitude = recommendListPlace.getRecommendPlaceLatitude();
+        this.recommendPlaceLongitude = recommendListPlace.getRecommendPlaceLongitude();
+        this.recommendPlacePhoneNo = recommendListPlace.getRecommendPlacePhoneNo();
+        this.recommendPlaceImgPath = recommendListPlace.getRecommendPlaceImgPath();
+    }
 }

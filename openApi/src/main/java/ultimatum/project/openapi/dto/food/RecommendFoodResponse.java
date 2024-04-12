@@ -1,34 +1,45 @@
 package ultimatum.project.openapi.dto.food;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import ultimatum.project.openapi.entity.RecommendListFood;
 
 import java.sql.Time;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommendFoodResponse {
 
-    private Long recommendFoodId;
-    private String recommendContentsid;
+    private String recommendFoodContentsId;
     private String recommendFoodTitle;
     private String recommendFoodIntroduction;
     private String recommendFoodAllTag;
     private String recommendFoodTag;
-    private String recommendCategory;
+    private String recommendFoodCategory;
     private String recommendFoodAddress;
     private String recommendFoodRegion;
-    private Time recommendFoodOpentime;
-    private Time recommendFoodClosetime;
-    private Long recommendFoodStar;
-    private Long recommendFoodLike;
     private String recommendFoodLatitude;
     private String recommendFoodLongitude;
-    private Integer recommendFoodPhoneno;
+    private String recommendFoodPhoneNo;
     private String recommendFoodImgPath;
-    private String recommendFoodBudget;
+
+    //build 패턴으로 메소드
+    //recommendListFood entity
+    public RecommendFoodResponse(RecommendListFood recommendListFood) {
+
+        this.recommendFoodContentsId = recommendListFood.getRecommendFoodContentsId();
+        this.recommendFoodTitle = recommendListFood.getRecommendFoodTitle();
+        this.recommendFoodIntroduction = recommendListFood.getRecommendFoodIntroduction();
+        this.recommendFoodAllTag = recommendListFood.getRecommendFoodAllTag();
+        this.recommendFoodTag = recommendListFood.getRecommendFoodTag();
+        this.recommendFoodCategory = recommendListFood.getRecommendFoodCategory();
+        this.recommendFoodAddress = recommendListFood.getRecommendFoodAddress();
+        this.recommendFoodRegion = recommendListFood.getRecommendFoodRegion();
+        this.recommendFoodLatitude = recommendListFood.getRecommendFoodLatitude();
+        this.recommendFoodLongitude = recommendListFood.getRecommendFoodLongitude();
+        this.recommendFoodPhoneNo = recommendListFood.getRecommendFoodPhoneNo();
+        this.recommendFoodImgPath = recommendListFood.getRecommendFoodImgPath();;
+    }
 }

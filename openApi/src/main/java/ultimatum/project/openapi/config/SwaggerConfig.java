@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @io.swagger.v3.oas.annotations.info.Info(title = "Project Team - Ultimatum",
-                description = "수료전 우리의 최후통첩을 전달합시다",
+                description = "제주 API DB 저장",
                 version = "v1")
 )
 @Configuration

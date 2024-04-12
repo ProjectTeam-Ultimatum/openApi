@@ -2,6 +2,7 @@ package ultimatum.project.openapi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 import java.sql.Time;
@@ -15,8 +16,9 @@ import java.sql.Time;
 public class RecommendListFood {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recommendFoodId;
+    private String recommendFoodContentsId;
     private String recommendFoodTitle;
     private String recommendFoodIntroduction;
     private String recommendFoodAllTag;
@@ -30,7 +32,7 @@ public class RecommendListFood {
     private Long recommendFoodLike;
     private String recommendFoodLatitude;
     private String recommendFoodLongitude;
-    private Integer recommendFoodPhoneno;
+    private String recommendFoodPhoneNo;
     private String recommendFoodImgPath;
     private String recommendFoodBudget;
 

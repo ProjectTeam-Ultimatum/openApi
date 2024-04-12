@@ -2,8 +2,11 @@ package ultimatum.project.openapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ultimatum.project.openapi.dto.food.RecommendFoodRequest;
 import ultimatum.project.openapi.dto.food.RecommendFoodResponse;
@@ -11,9 +14,16 @@ import ultimatum.project.openapi.dto.hotel.RecommendHotelResponse;
 import ultimatum.project.openapi.dto.jejuAPI.Item;
 import ultimatum.project.openapi.dto.jejuAPI.JejuAllResponse;
 import ultimatum.project.openapi.dto.place.RecommendPlaceResponse;
+import ultimatum.project.openapi.entity.RecommendListFood;
+import ultimatum.project.openapi.entity.RecommendListHotel;
+import ultimatum.project.openapi.entity.RecommendListPlace;
 import ultimatum.project.openapi.repository.RecommendListFoodRepository;
 import ultimatum.project.openapi.repository.RecommendListHotelRepository;
 import ultimatum.project.openapi.repository.RecommendListPlaceRepository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -26,8 +36,24 @@ public class JejuApiService {
     private final RecommendListPlaceRepository recommendListPlaceRepository;
     private final RecommendListHotelRepository recommendListHotelRepository;
 
-    //조회
+
+    //API 요청 후 Response 담기
+    //2 응답 처리
+    // Jeju API로부터 받은 응답(Mono<JejuAllResponse>)을 processJejuApiResponse 메소드로 전달하여 처리
+    //응답 데이터에 대해 반복 처리를 수행
+    //Item의 contentscd 필드(카테고리)를 기준으로 음식점, 관광지, 숙소 등의 항목을 구분
     public Mono<JejuAllResponse> processJejuApiResponse(Mono<JejuAllResponse> jejuAllResponseMono) {
+
+        //파라미터를 받아온 값을 이용해서 원하는 로직을 작성
+
+
+        // 결과값이나옴
+
+        // 결과값을 return해줄 타입으로 맞춰줌
+
+
+        // return return 타입과 맞는결과
+        // 현재 비즈니스 로직
 
         //jejuAllResponse 전체조회
         return jejuAllResponseMono.doOnNext(jejuAllResponse -> {
@@ -37,77 +63,105 @@ public class JejuApiService {
 
             if (jejuAllResponse.getItems() != null) {
                 jejuAllResponse.getItems().forEach(item -> {
-                    String label = item.getContentscd().getLabel();
-
-                    switch (label) {
-                        case "음식점":
-                            RecommendFoodResponse foodResponse = createFoodResponse(item);
-                            log.info("Food Response Created: {}", foodResponse.getRecommendFoodTitle());
-                            break;
-                        case "관광지":
-                            RecommendPlaceResponse placeResponse = createPlaceResponse(item);
-                            log.info("Place Response Created: {}", placeResponse.getRecommendPlaceTitle());
-                            break;
-                        case "숙소":
-                            RecommendHotelResponse hotelResponse = createHotelResponse(item);
-                            log.info("Hotel Response Created: {}", hotelResponse.getRecommendHotelTitle());
-                            break;
-                        default:
-                            log.info("Other Category: {}", label);
-                            break;
-                    }
+                    createFoodResponse(item);
 
                     // Item 필드 로그 출력
-//                    log.info("Contentsid: {}", item.getContentsid());
-//                    log.info("Title: {}", item.getTitle());
-//                    log.info("Introduction: {}", item.getIntroduction());
-//                    log.info("Alltagg: {}", item.getAlltag());
-//                    log.info("Tag: {}", item.getTag());
-//                    log.info("Category: {}", item.getContentscd().getLabel());
-//                    log.info("Address: {}", item.getAddress());
-//                    log.info("Roadaddress: {}", item.getRoadaddress());
-//                    log.info("지역코드: {}", item.getRegion1cd().getLabel());
-//                    log.info("Region2cd: {}", item.getRegion2cd());
-//                    log.info("Latitude: {}", item.getLatitude());
-//                    log.info("Longitude: {}", item.getLongitude());
-//                    log.info("Postcode: {}", item.getPostcode());
-//                    log.info("Phoneno: {}", item.getPhoneno());
-//                    log.info("RepPhoto: {}", item.getRepPhoto());
+                    log.info("ContentsId: {}", item.getContentsid());
+                    log.info("Title: {}", item.getTitle());
+                    log.info("Introduction: {}", item.getIntroduction());
+                    log.info("AllTag: {}", item.getAlltag());
+                    log.info("Tag: {}", item.getTag());
+                    log.info("Category: {}", item.getContentscd().getLabel());
+                    log.info("Address: {}", item.getAddress());
+                    log.info("RoadAddress: {}", item.getRoadaddress());
+                    log.info("지역코드: {}", item.getRegion1cd().getLabel());
+                    log.info("Region2cd: {}", item.getRegion2cd());
+                    log.info("Latitude: {}", item.getLatitude());
+                    log.info("Longitude: {}", item.getLongitude());
+                    //log.info("Postcode: {}", item.getPostcode());
+                    log.info("PhoneNo: {}", item.getPhoneno());
+                    log.info("RepPhoto: {}", item.getRepPhoto().getPhotoId().getThumbnailpath());
                 });
             }
         });
     }
 
 
-    private RecommendFoodResponse createFoodResponse(Item item){
-        RecommendFoodResponse foodResponse = RecommendFoodResponse.builer()
-                .recommendContentsid(item.getContentsid())
+    // 3 데이터 변환 및 저장
+    // 음식점(음식점) 카테고리에 대한 Item을 처리하기 위해 호출
+    // Item의 정보를 RecommendListFood 엔티티에 매핑
+    // RecommendListFoodRepository를 통해 데이터베이스에 저장
+    // RecommendListFood 엔티티는 RecommendFoodResponse DTO로 변환되어 최종적으로 반환
+    public RecommendFoodResponse createFoodResponse(Item item){
+        RecommendListFood recommendFood = RecommendListFood.builder() //builder 필드 채우기
+                .recommendFoodContentsId(item.getContentsid())
                 .recommendFoodTitle(item.getTitle())
                 .recommendFoodIntroduction(item.getIntroduction())
                 .recommendFoodAllTag(item.getAlltag())
                 .recommendFoodTag(item.getTag())
-                .recommendCategory("음식점") // 카테고리 직접 설정
+                .recommendFoodCategory("음식점") // 카테고리 직접 설정
                 .recommendFoodAddress(item.getAddress())
                 .recommendFoodRegion(item.getRegion1cd().getLabel())
                 .recommendFoodLatitude(item.getLatitude().toString())
                 .recommendFoodLongitude(item.getLongitude().toString())
-                .recommendFoodPhoneno(Integer.parseInt(item.getPhoneno())) // 문자열을 정수로 변환
+                .recommendFoodPhoneNo(item.getPhoneno())
+                .recommendFoodImgPath(item.getRepPhoto().getPhotoId().getThumbnailpath())
                 .build();
 
-        // 생성된 RecommendFoodResponse 객체를 리포지토리에 저장합니다.
-        return recommendListFoodRepository.save(foodResponse);
+        RecommendListFood savedRecommendFood =recommendListFoodRepository.save(recommendFood);
+
+        RecommendFoodResponse recommendFoodResponse = new RecommendFoodResponse(savedRecommendFood);
+        return recommendFoodResponse;
     }
 
-    private RecommendPlaceResponse createPlaceResponse(Item item) {
-        RecommendPlaceResponse placeResponse = new RecommendPlaceResponse();
-        // 여기에 필드 설정 로직 추가...
-        return placeResponse;
+    // Place 저장
+    public RecommendPlaceResponse createPlaceResponse(Item item) {
+        RecommendListPlace recommendPlace = RecommendListPlace.builder()
+                .recommendPlaceContentsId(item.getContentsid())
+                .recommendPlaceTitle(item.getTitle())
+                .recommendPlaceIntroduction(item.getIntroduction())
+                .recommendPlaceAllTag(item.getAlltag())
+                .recommendPlaceTag(item.getTag())
+                .recommendPlaceCategory("관광지") // 카테고리 직접 설정
+                .recommendPlaceAddress(item.getAddress())
+                .recommendPlaceRegion(item.getRegion1cd().getLabel())
+                .recommendPlaceLatitude(item.getLatitude().toString())
+                .recommendPlaceLongitude(item.getLongitude().toString())
+                .recommendPlacePhoneNo(item.getPhoneno())
+                .recommendPlaceImgPath(item.getRepPhoto().getPhotoId().getThumbnailpath())
+                .build();
+
+        RecommendListPlace savedRecommendPlace =recommendListPlaceRepository.save(recommendPlace);
+        log.info("🎈 savedRecommendPlaceID : {}", savedRecommendPlace.getRecommendPlaceId());
+        RecommendPlaceResponse recommendPlaceResponse = new RecommendPlaceResponse(savedRecommendPlace);
+
+        return recommendPlaceResponse;
+
     }
 
-    private RecommendHotelResponse createHotelResponse(Item item) {
-        RecommendHotelResponse hotelResponse = new RecommendHotelResponse();
-        // 여기에 필드 설정 로직 추가...
-        return hotelResponse;
+    //숙소 저장
+
+    public RecommendHotelResponse createHotelResponse(Item item){
+        RecommendListHotel recommendHotel = RecommendListHotel.builder() //builder 필드 채우기
+                .recommendHotelContentsId(item.getContentsid())
+                .recommendHotelTitle(item.getTitle())
+                .recommendHotelIntroduction(item.getIntroduction())
+                .recommendHotelAllTag(item.getAlltag())
+                .recommendHotelTag(item.getTag())
+                .recommendHotelCategory("숙박") // 카테고리 직접 설정
+                .recommendHotelAddress(item.getAddress())
+                .recommendHotelRegion(item.getRegion1cd().getLabel())
+                .recommendHotelLatitude(item.getLatitude().toString())
+                .recommendHotelLongitude(item.getLongitude().toString())
+                .recommendHotelPhoneNo(item.getPhoneno())
+                .recommendHotelImgPath(item.getRepPhoto().getPhotoId().getThumbnailpath())
+                .build();
+
+        RecommendListHotel savedRecommendHotel =recommendListHotelRepository.save(recommendHotel);
+
+        RecommendHotelResponse recommendHotelResponse = new RecommendHotelResponse(savedRecommendHotel);
+        return recommendHotelResponse;
     }
+
 
 }

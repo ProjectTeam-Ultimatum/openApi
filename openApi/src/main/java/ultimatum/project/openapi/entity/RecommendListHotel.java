@@ -2,6 +2,7 @@ package ultimatum.project.openapi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -16,10 +17,11 @@ import java.sql.Time;
 public class RecommendListHotel {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recommendHotelId;
+    private String recommendHotelContentsId;
     private String recommendHotelTitle;
-    private String recommendHotelntroduction;
+    private String recommendHotelIntroduction;
     private String recommendHotelAllTag;
     private String recommendHotelTag;
     private String recommendHotelCategory;
@@ -31,7 +33,7 @@ public class RecommendListHotel {
     private Long recommendHotelLike;
     private String recommendHotelLatitude;
     private String recommendHotelLongitude;
-    private Integer recommendHotelPhoneno;
+    private String recommendHotelPhoneNo;
     private String recommendHotelImgPath;
     private String recommendHotelBudget;
 }

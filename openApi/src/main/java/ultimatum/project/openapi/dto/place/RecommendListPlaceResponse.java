@@ -4,16 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ultimatum.project.openapi.entity.RecommendListFood;
 import ultimatum.project.openapi.entity.RecommendListPlace;
-
-import java.sql.Time;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecommendPlaceResponse {
+public class RecommendListPlaceResponse {
 
     private String recommendPlaceTitle;
     private String recommendPlaceIntroduction;
@@ -27,7 +24,7 @@ public class RecommendPlaceResponse {
     private String recommendPlacePhoneNo;
     private String recommendPlaceImgPath;
 
-    public RecommendPlaceResponse(RecommendListPlace recommendListPlace) {
+    public RecommendListPlaceResponse(RecommendListPlace recommendListPlace) {
 
         this.recommendPlaceTitle = recommendListPlace.getRecommendPlaceTitle();
         this.recommendPlaceIntroduction = recommendListPlace.getRecommendPlaceIntroduction();

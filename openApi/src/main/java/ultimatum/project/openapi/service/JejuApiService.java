@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ultimatum.project.openapi.dto.event.RecommendEventResponse;
-import ultimatum.project.openapi.dto.food.RecommendFoodResponse;
-import ultimatum.project.openapi.dto.hotel.RecommendHotelResponse;
+import ultimatum.project.openapi.dto.event.RecommendListEventResponse;
+import ultimatum.project.openapi.dto.food.RecommendListFoodResponse;
+import ultimatum.project.openapi.dto.hotel.RecommendListHotelResponse;
 import ultimatum.project.openapi.dto.jejuAPI.Item;
 import ultimatum.project.openapi.dto.jejuAPI.JejuAllResponse;
-import ultimatum.project.openapi.dto.place.RecommendPlaceResponse;
+import ultimatum.project.openapi.dto.place.RecommendListPlaceResponse;
 import ultimatum.project.openapi.entity.RecommendListEvent;
 import ultimatum.project.openapi.entity.RecommendListFood;
 import ultimatum.project.openapi.entity.RecommendListHotel;
@@ -56,7 +56,7 @@ public class JejuApiService {
     }
 
     //제주 음식점 정보 요청
-    public Mono<ResponseEntity<List<RecommendFoodResponse>>> getRecommendFoods() {
+    public Mono<ResponseEntity<List<RecommendListFoodResponse>>> getRecommendFoods() {
         log.info("제주 음식점 추천 정보를 API에서 검색 중입니다.");
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -68,7 +68,7 @@ public class JejuApiService {
                 .retrieve()
                 .bodyToMono(JejuAllResponse.class)
                 .flatMapMany(response -> {
-                    log.info("제주 음식점 검색완료 항목: {}개", response.getItems().size());
+                    log.info("제주 음식점총개수 : {}개", response.getItems().size());
                     return Flux.fromIterable(response.getItems());
                 })
                 .map(this::createFoodResponse)
@@ -79,7 +79,7 @@ public class JejuApiService {
     }
 
     //제주 관광지 정보 요청
-    public Mono<ResponseEntity<List<RecommendPlaceResponse>>> getRecommendPlaces() {
+    public Mono<ResponseEntity<List<RecommendListPlaceResponse>>> getRecommendPlaces() {
         log.info("제주 관광지API 검색 중....");
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -102,7 +102,7 @@ public class JejuApiService {
     }
 
     //제주 숙박 정보 요청
-    public Mono<ResponseEntity<List<RecommendHotelResponse>>> getRecommendHotels() {
+    public Mono<ResponseEntity<List<RecommendListHotelResponse>>> getRecommendHotels() {
         log.info("숙박API 검색 중....");
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -125,7 +125,7 @@ public class JejuApiService {
     }
 
     //제주 축제/행사 정보 요청
-    public Mono<ResponseEntity<List<RecommendEventResponse>>> getRecommendEvents() {
+    public Mono<ResponseEntity<List<RecommendListEventResponse>>> getRecommendEvents() {
         log.info("축제행사API 검색 중....");
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -204,7 +204,7 @@ public class JejuApiService {
     }
 
 
-    public RecommendFoodResponse createFoodResponse(Item item){
+    public RecommendListFoodResponse createFoodResponse(Item item){
         log.info("음식점 데이터 변환 및 저장을 시작합니다.");
 
         RecommendListFood recommendFood = RecommendListFood.builder() //builder 필드 채우기
@@ -226,13 +226,13 @@ public class JejuApiService {
         RecommendListFood savedRecommendFood = recommendListFoodRepository.save(recommendFood);
         log.info("음식점 데이터 저장 완료");
 
-        RecommendFoodResponse recommendFoodResponse = new RecommendFoodResponse(savedRecommendFood);
+        RecommendListFoodResponse recommendFoodResponse = new RecommendListFoodResponse(savedRecommendFood);
         log.info("음식점 응답 객체 생성 완료");
         return recommendFoodResponse;
     }
 
     // 관광지 저장
-    public RecommendPlaceResponse createPlaceResponse(Item item) {
+    public RecommendListPlaceResponse createPlaceResponse(Item item) {
         log.info("관광지 데이터 변환 및 저장을 시작합니다.");
         RecommendListPlace recommendPlace = RecommendListPlace.builder()
                 .recommendPlaceContentsId(item.getContentsid())
@@ -251,14 +251,14 @@ public class JejuApiService {
 
         RecommendListPlace savedRecommendPlace =recommendListPlaceRepository.save(recommendPlace);
         log.info("관광지 데이터 저장 완료");
-        RecommendPlaceResponse recommendPlaceResponse = new RecommendPlaceResponse(savedRecommendPlace);
+        RecommendListPlaceResponse recommendPlaceResponse = new RecommendListPlaceResponse(savedRecommendPlace);
         log.info("관광지 응답 객체 생성 완료");
 
         return recommendPlaceResponse;
     }
 
     //숙박 저장
-    public RecommendHotelResponse createHotelResponse(Item item){
+    public RecommendListHotelResponse createHotelResponse(Item item){
         log.info("숙박 데이터 변환 및 저장을 시작합니다.");
         RecommendListHotel recommendHotel = RecommendListHotel.builder() //builder 필드 채우기
                 .recommendHotelContentsId(item.getContentsid())
@@ -277,13 +277,13 @@ public class JejuApiService {
 
         RecommendListHotel savedRecommendHotel =recommendListHotelRepository.save(recommendHotel);
         log.info("숙박 데이터 저장 완료");
-        RecommendHotelResponse recommendHotelResponse = new RecommendHotelResponse(savedRecommendHotel);
+        RecommendListHotelResponse recommendHotelResponse = new RecommendListHotelResponse(savedRecommendHotel);
         log.info("숙박 응답 객체 생성 완료");
         return recommendHotelResponse;
     }
 
     //축제행사 저장
-    public RecommendEventResponse createEventResponse(Item item){
+    public RecommendListEventResponse createEventResponse(Item item){
         log.info("축제행사 데이터 변환 및 저장을 시작합니다.");
         RecommendListEvent recommendEvent = RecommendListEvent.builder() //builder 필드 채우기
                 .recommendEventContentsId(item.getContentsid())
@@ -302,7 +302,7 @@ public class JejuApiService {
 
         RecommendListEvent savedRecommendEvent = recommendListEventRepository.save(recommendEvent);
         log.info("축제행사 데이터 저장 완료");
-        RecommendEventResponse recommendEventResponse = new RecommendEventResponse(savedRecommendEvent);
+        RecommendListEventResponse recommendEventResponse = new RecommendListEventResponse(savedRecommendEvent);
         log.info("축제행사 응답 객체 생성 완료");
         return recommendEventResponse;
     }

@@ -3,14 +3,12 @@ package ultimatum.project.openapi.dto.food;
 import lombok.*;
 import ultimatum.project.openapi.entity.RecommendListFood;
 
-import java.sql.Time;
-
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecommendFoodResponse {
+public class RecommendListFoodResponse {
 
     private String recommendFoodContentsId;
     private String recommendFoodTitle;
@@ -27,7 +25,7 @@ public class RecommendFoodResponse {
 
     //build 패턴으로 메소드
     //recommendListFood entity
-    public RecommendFoodResponse(RecommendListFood recommendListFood) {
+    public RecommendListFoodResponse(RecommendListFood recommendListFood) {
 
         this.recommendFoodContentsId = recommendListFood.getRecommendFoodContentsId();
         this.recommendFoodTitle = recommendListFood.getRecommendFoodTitle();

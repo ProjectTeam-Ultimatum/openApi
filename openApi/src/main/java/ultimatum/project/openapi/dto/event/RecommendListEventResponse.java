@@ -10,7 +10,7 @@ import ultimatum.project.openapi.entity.RecommendListEvent;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecommendEventResponse {
+public class RecommendListEventResponse {
 
     private String recommendEventContentsId;
     private String recommendEventTitle;
@@ -27,7 +27,7 @@ public class RecommendEventResponse {
 
     //build 패턴으로 메소드
     //recommendListEvent entity
-    public RecommendEventResponse(RecommendListEvent recommendListEvent) {
+    public RecommendListEventResponse(RecommendListEvent recommendListEvent) {
 
         this.recommendEventContentsId = recommendListEvent.getRecommendEventContentsId();
         this.recommendEventTitle = recommendListEvent.getRecommendEventTitle();

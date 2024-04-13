@@ -1,4 +1,4 @@
-package ultimatum.project.openapi.dto;
+package ultimatum.project.openapi.dto.food;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

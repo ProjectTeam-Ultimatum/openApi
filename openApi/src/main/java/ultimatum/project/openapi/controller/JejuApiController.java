@@ -32,25 +32,25 @@ public class JejuApiController {
 
     @GetMapping("/food")
     public Mono<ResponseEntity<List<RecommendListFoodResponse>>> getFoods() {
-        log.info("음식점 정보 요청중");
+        log.info("음식점 요청중..............");
         return jejuApiService.getRecommendFoods();
     }
 
     @GetMapping("/place")
     public Mono<ResponseEntity<List<RecommendListPlaceResponse>>> getPlaces() {
-        log.info("관광지 정보 요청중");
+        log.info("관광지 요청중..............");
         return jejuApiService.getRecommendPlaces();
     }
 
     @GetMapping("/hotel")
     public Mono<ResponseEntity<List<RecommendListHotelResponse>>> getHotels() {
-        log.info("숙박 정보 요청중");
+        log.info("숙박 요청중..............");
         return jejuApiService.getRecommendHotels();
     }
 
     @GetMapping("/event")
     public Mono<ResponseEntity<List<RecommendListEventResponse>>> getEvents() {
-        log.info("축제행사 정보 요청중");
+        log.info("축제행사 요청중..............");
         return jejuApiService.getRecommendEvents();
     }
 

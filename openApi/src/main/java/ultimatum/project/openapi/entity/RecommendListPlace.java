@@ -1,9 +1,6 @@
 package ultimatum.project.openapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
@@ -21,8 +18,11 @@ public class RecommendListPlace {
     private Long recommendPlaceId;
     private String recommendPlaceContentsId;
     private String recommendPlaceTitle;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendPlaceIntroduction;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendPlaceAllTag;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendPlaceTag;
     private String recommendPlaceCategory;
     private String recommendPlaceAddress;

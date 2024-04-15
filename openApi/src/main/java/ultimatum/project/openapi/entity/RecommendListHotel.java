@@ -1,9 +1,6 @@
 package ultimatum.project.openapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
@@ -21,8 +18,11 @@ public class RecommendListHotel {
     private Long recommendHotelId;
     private String recommendHotelContentsId;
     private String recommendHotelTitle;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendHotelIntroduction;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendHotelAllTag;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendHotelTag;
     private String recommendHotelCategory;
     private String recommendHotelAddress;

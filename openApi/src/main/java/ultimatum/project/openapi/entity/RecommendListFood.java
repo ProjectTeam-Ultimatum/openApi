@@ -1,9 +1,6 @@
 package ultimatum.project.openapi.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import java.sql.Time;
 
@@ -20,8 +17,12 @@ public class RecommendListFood {
     private Long recommendFoodId;
     private String recommendFoodContentsId;
     private String recommendFoodTitle;
+    //콘텐츠 타입 길이/크기 16MB 세팅
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendFoodIntroduction;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendFoodAllTag;
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String recommendFoodTag;
     private String recommendFoodCategory;
     private String recommendFoodAddress;
